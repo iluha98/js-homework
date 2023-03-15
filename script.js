@@ -1,28 +1,32 @@
 const cells = document.querySelectorAll('.cell');
 const info = document.querySelector('.info');
 const newGame = document.querySelector('.btn');
+
 play(cells);
+let gameFinished = false;
 
 function play(cells) {
     let count = 0;
 
     for(let cell of cells){
-        cell.addEventListener('click', function step () {
-            if(count % 2 == 0) {
-                cell.textContent = 'x';
-            } else {
-                cell.textContent = 'o';
-            }
-            cell.removeEventListener('click', step);
+		cell.addEventListener('click', function step() {
+			if(gameFinished != false) return;
+			if(count % 2 == 0) {
+				cell.textContent = 'x';
+			} else {
+				cell.textContent = 'o';
+			}
+			cell.removeEventListener('click', step);
 
-            if (win(cells)) {
+			if (win(cells)) {
 				info.textContent = `Выиграл игрок - ${this.textContent}`;
+				gameFinished = true;
 			} else if(count === 8){
 				info.textContent = 'Ничья';
 			}
 			
-            count++;
-        })
+			count++;
+		});
     }
 }
 function win(cells) {
